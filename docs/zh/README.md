@@ -53,11 +53,18 @@ php-pdf 在嵌入之前会检查 CSP 返回的签名：它恰好覆盖本文档�
 
 - **CryptoPro CSP 5**，其许可证允许服务器端签名；密钥容器已为运行 PHP 的
   用户安装（或安装在计算机存储中并具有访问权限）。
-- **CryptoPro 的 PHP 扩展**（CAdES SDK 中的 `phpcades`），针对你的 PHP
-  版本编译并已加载。
+- **CryptoPro 的 PHP 扩展**（`phpcades`），针对你的 PHP 版本编译并已加载：
+  源码和构建步骤见 [CryptoPro/phpcades](https://github.com/CryptoPro/phpcades)；
+  本包的 `docker/Dockerfile` 在 Ubuntu 24.04 上完成这些步骤。
 - GOST 密钥需要 **OpenSSL gost engine**：php-pdf 会自行计算文档的
   Streebog 哈希并验证返回的签名。php-pdf 仓库的 `docker/gost/` 中有可用的
   配置示例。
+
+## 在真实 CSP 上试用
+
+`docker/` 会构建一个包含 CryptoPro CSP、phpcades 和 gost engine 的容器，
+并用 GOST 测试证书以两种模式签署 PDF——见
+[docker/README.md](../../docker/README.md)。
 
 ## 无 CryptoPro 时的测试
 

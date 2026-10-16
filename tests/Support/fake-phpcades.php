@@ -132,7 +132,7 @@ class CPSignedData
         return base64_encode($builder->assemble($attributes, $key->sign($attributes)));
     }
 
-    public function SignCades(CPSigner $signer, int $type, bool $detached, int $encoding): string
+    public function SignCades(CPSigner $signer, int $type, int $detached, int $encoding): string
     {
         FakeCsp::$calls[] = ['SignCades', $this->encoding, $signer->options, $type, $detached, $encoding];
         FakeCsp::checkPin();

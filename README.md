@@ -65,11 +65,19 @@ On the server where PHP signs:
 - **CryptoPro CSP 5** with a licence that allows server-side signing, and
   the key container installed for the user PHP runs as (or in the machine
   store with access rights).
-- **CryptoPro's PHP extension** (`phpcades`, from the CAdES SDK) built for
-  your PHP version and loaded.
+- **CryptoPro's PHP extension** (`phpcades`) built for your PHP version and
+  loaded: the sources and build steps are at
+  [CryptoPro/phpcades](https://github.com/CryptoPro/phpcades); `docker/Dockerfile`
+  here does it on Ubuntu 24.04.
 - **The OpenSSL gost engine** for GOST keys: php-pdf computes the Streebog
   digest of the document and verifies the returned signature itself. The
   php-pdf repository has a working recipe in `docker/gost/`.
+
+## Trying it on a real CSP
+
+`docker/` builds a container with CryptoPro CSP, phpcades and the gost
+engine and signs a PDF with a test GOST certificate in both modes — see
+[docker/README.md](docker/README.md).
 
 ## Testing without CryptoPro
 
