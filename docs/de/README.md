@@ -61,11 +61,19 @@ Auf dem Server, auf dem PHP signiert:
 - **CryptoPro CSP 5** mit einer Lizenz für serverseitiges Signieren und
   dem Schlüsselcontainer für den Benutzer, unter dem PHP läuft (oder im
   Computerspeicher mit Zugriffsrechten).
-- **Die PHP-Erweiterung von CryptoPro** (`phpcades` aus dem CAdES SDK),
-  für Ihre PHP-Version gebaut und geladen.
+- **Die PHP-Erweiterung von CryptoPro** (`phpcades`), für Ihre PHP-Version
+  gebaut und geladen: Quellen und Build-Schritte unter
+  [CryptoPro/phpcades](https://github.com/CryptoPro/phpcades); `docker/Dockerfile`
+  dieses Pakets erledigt das unter Ubuntu 24.04.
 - **Die OpenSSL-gost-Engine** für GOST-Schlüssel: php-pdf berechnet den
   Streebog-Hash des Dokuments und prüft die gelieferte Signatur selbst. Ein
   funktionierendes Rezept liegt in `docker/gost/` des php-pdf-Repositorys.
+
+## Ausprobieren mit einem echten CSP
+
+`docker/` baut einen Container mit CryptoPro CSP, phpcades und der
+gost-Engine und signiert eine PDF mit einem GOST-Testzertifikat in beiden
+Modi — siehe [docker/README.md](../../docker/README.md).
 
 ## Tests ohne CryptoPro
 

@@ -75,7 +75,7 @@ final class CryptoProCadesSignerTest extends TestCase
         [, $encoding, $options, , $detached] = $sign[0];
         self::assertSame(1, $encoding, 'Binary content goes in as base64');
         self::assertSame(2, $options, 'Only the signer certificate');
-        self::assertTrue($detached);
+        self::assertSame(1, $detached);
     }
 
     #[Test]

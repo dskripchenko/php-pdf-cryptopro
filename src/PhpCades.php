@@ -89,7 +89,7 @@ final class PhpCades implements Cades
             $base64 = (string) $data->SignCades(
                 $this->signer($certificate, $pin, $wholeChain),
                 self::constant('CADES_BES', 1),
-                true,
+                1, // detached; the extension takes an integer, not a bool
                 self::constant('ENCODE_BASE64', 0),
             );
         } catch (\Throwable $e) {

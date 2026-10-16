@@ -66,7 +66,7 @@ class CPSignedData
         return '';
     }
 
-    public function SignCades(CPSigner $signer, int $type, bool $detached, int $encoding): string
+    public function SignCades(CPSigner $signer, int $type, int $detached, int $encoding): string
     {
         return '';
     }
