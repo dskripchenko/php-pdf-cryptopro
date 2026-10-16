@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    scanFiles:
+        - stubs/phpcades.php
+    excludePaths:
+        - tests/Support/fake-phpcades.php
