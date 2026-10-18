@@ -58,6 +58,7 @@ nicht unterstützter Algorithmus.
 
 Auf dem Server, auf dem PHP signiert:
 
+- **PHP 8.2+** mit `dskripchenko/php-pdf` 1.18 oder neuer (Composer installiert es).
 - **CryptoPro CSP 5** mit einer Lizenz für serverseitiges Signieren und
   dem Schlüsselcontainer für den Benutzer, unter dem PHP läuft (oder im
   Computerspeicher mit Zugriffsrechten).
@@ -82,6 +83,17 @@ dem CSP; `PhpCades` ist ihre Implementierung auf Basis der Erweiterung.
 Übergeben Sie ein eigenes `Cades` als `cades:`, um den Code ohne CryptoPro
 auszuführen — so machen es die Tests dieses Pakets mit einer
 OpenSSL-basierten Attrappe der Erweiterung.
+
+## Die php-pdf-Familie
+
+| Paket | Was es hinzufügt |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | Der Kern: HTML mit CSS oder ein Builder zu PDF, lesen, zusammenführen, Formulare ausfüllen, signieren und validieren. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel-Brücke: eine Blade-View direkt als PDF, `response()->pdf()`, Signieren aus der Konfiguration. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif und Mono, metrisch kompatibel zu Arial, Times New Roman und Courier New (OFL, aus dem MIT-Kern herausgehalten). |
+| **php-pdf-cryptopro** (dieses Paket) | Signiert mit einem Schlüssel in CryptoPro CSP auf dem Server: GOST R 34.10-2012, russische qualifizierte Signaturen. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Signiert mit einem Schlüssel auf einem HSM, einer Smartcard oder einem USB-Token über PKCS#11. |
+| [php-pdf-cloud-kms](https://github.com/dskripchenko/php-pdf-cloud-kms) | Signiert mit einem Schlüssel in AWS KMS, Google Cloud KMS oder Azure Key Vault. |
 
 ## Lizenz
 

@@ -51,6 +51,7 @@ php-pdf 在嵌入之前会检查 CSP 返回的签名：它恰好覆盖本文档�
 
 在 PHP 执行签名的服务器上：
 
+- **PHP 8.2+**，以及 `dskripchenko/php-pdf` 1.18 或更高版本（由 Composer 安装）。
 - **CryptoPro CSP 5**，其许可证允许服务器端签名；密钥容器已为运行 PHP 的
   用户安装（或安装在计算机存储中并具有访问权限）。
 - **CryptoPro 的 PHP 扩展**（`phpcades`），针对你的 PHP 版本编译并已加载：
@@ -71,6 +72,17 @@ php-pdf 在嵌入之前会检查 CSP 返回的签名：它恰好覆盖本文档�
 `CryptoProCadesSigner` 通过小接口 `Cades` 与 CSP 交互；`PhpCades` 是基于
 该扩展的实现。通过 `cades:` 传入自己的 `Cades`，即可在没有 CryptoPro 的
 情况下运行代码——本包的测试就是用基于 OpenSSL 的扩展替身这样做的。
+
+## php-pdf 系列
+
+| 包 | 提供的功能 |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | 核心：用 HTML 加 CSS 或构建器生成 PDF，读取、合并、填写表单、签名和验证。 |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel 桥接：Blade 视图直接生成 PDF、`response()->pdf()`、按配置签名。 |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans、Serif 和 Mono，与 Arial、Times New Roman 和 Courier New 度量兼容（OFL 许可，独立于 MIT 核心之外）。 |
+| **php-pdf-cryptopro**（本包） | 使用服务器上 CryptoPro CSP 中的密钥签名：GOST R 34.10-2012，俄罗斯合格电子签名。 |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | 通过 PKCS#11 使用 HSM、智能卡或 USB 令牌上的密钥签名。 |
+| [php-pdf-cloud-kms](https://github.com/dskripchenko/php-pdf-cloud-kms) | 使用 AWS KMS、Google Cloud KMS 或 Azure Key Vault 中的密钥签名。 |
 
 ## 许可证
 
