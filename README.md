@@ -62,6 +62,7 @@ without a private key, an untrusted chain, an unsupported algorithm.
 
 On the server where PHP signs:
 
+- **PHP 8.2+** with `dskripchenko/php-pdf` 1.18 or later (Composer installs it).
 - **CryptoPro CSP 5** with a licence that allows server-side signing, and
   the key container installed for the user PHP runs as (or in the machine
   store with access rights).
@@ -85,6 +86,17 @@ engine and signs a PDF with a test GOST certificate in both modes — see
 interface; `PhpCades` is its implementation on top of the extension. Pass
 your own `Cades` as `cades:` to run the code without CryptoPro — this
 package's tests do so with a fake of the extension backed by OpenSSL.
+
+## The php-pdf family
+
+| Package | What it adds |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | The core: HTML with CSS or a builder to PDF, read, merge, fill forms, sign and validate. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Laravel bridge: a Blade view straight to PDF, `response()->pdf()`, signing from config. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif and Mono, metric-compatible with Arial, Times New Roman and Courier New (OFL, kept out of the MIT core). |
+| **php-pdf-cryptopro** (this package) | Signs with a key in CryptoPro CSP on the server: GOST R 34.10-2012, Russian qualified signatures. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Signs with a key on an HSM, a smart card or a USB token, through PKCS#11. |
+| [php-pdf-cloud-kms](https://github.com/dskripchenko/php-pdf-cloud-kms) | Signs with a key in AWS KMS, Google Cloud KMS or Azure Key Vault. |
 
 ## License
 

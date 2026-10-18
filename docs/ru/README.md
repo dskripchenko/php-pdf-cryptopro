@@ -54,6 +54,7 @@ php-pdf проверяет подпись, которую вернул CSP, пр
 
 На сервере, где PHP подписывает:
 
+- **PHP 8.2+** и `dskripchenko/php-pdf` 1.18 или новее (Composer установит его сам).
 - **КриптоПро CSP 5** с лицензией на серверную подпись и контейнер ключа,
   установленный для пользователя, от которого работает PHP (или в
   хранилище компьютера с правами доступа).
@@ -77,6 +78,17 @@ php-pdf проверяет подпись, которую вернул CSP, пр
 `PhpCades` — его реализация поверх расширения. Передайте свой `Cades` в
 `cades:`, чтобы запускать код без КриптоПро — так делают тесты этого пакета
 с подделкой расширения на OpenSSL.
+
+## Семейство php-pdf
+
+| Пакет | Что добавляет |
+|---|---|
+| [php-pdf](https://github.com/dskripchenko/php-pdf) | Ядро: HTML с CSS или билдер в PDF, чтение, слияние, заполнение форм, подпись и проверка. |
+| [laravel-php-pdf](https://github.com/dskripchenko/laravel-php-pdf) | Мост для Laravel: Blade-шаблон сразу в PDF, `response()->pdf()`, подпись из конфига. |
+| [php-pdf-fonts-liberation](https://github.com/dskripchenko/php-pdf-fonts-liberation) | Liberation Sans, Serif и Mono, метрически совместимые с Arial, Times New Roman и Courier New (OFL, вынесены из MIT-ядра). |
+| **php-pdf-cryptopro** (этот пакет) | Подпись ключом в КриптоПро CSP на сервере: ГОСТ Р 34.10-2012, российская квалифицированная подпись. |
+| [php-pdf-pkcs11](https://github.com/dskripchenko/php-pdf-pkcs11) | Подпись ключом на HSM, смарт-карте или USB-токене через PKCS#11. |
+| [php-pdf-cloud-kms](https://github.com/dskripchenko/php-pdf-cloud-kms) | Подпись ключом в AWS KMS, Google Cloud KMS или Azure Key Vault. |
 
 ## Лицензия
 
