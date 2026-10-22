@@ -241,8 +241,8 @@ final class ApiSurface
                 'static' => $method->isStatic(),
                 'final' => $method->isFinal(),
                 'abstract' => $method->isAbstract(),
-                'return' => (string) $method->getReturnType(),
-                'params' => array_map(self::param(...), $method->getParameters()),
+                'return' => self::type($method->getReturnType(), $class),
+                'params' => array_map(static fn (\ReflectionParameter $p): array => self::param($p, $class), $method->getParameters()),
             ];
         }
         ksort($methods);
@@ -269,7 +269,7 @@ final class ApiSurface
                 continue;
             }
             $properties[$property->getName()] = [
-                'type' => (string) $property->getType(),
+                'type' => self::type($property->getType(), $class),
                 'readonly' => $property->isReadOnly(),
                 'static' => $property->isStatic(),
             ];
@@ -293,8 +293,22 @@ final class ApiSurface
         ];
     }
 
-    /** @return array<string, mixed> */
-    private static function param(\ReflectionParameter $p): array
+    /**
+     * A type as text, `self` spelled out: PHP 8.5 reflects `self` as the
+     * class name, earlier versions as `self`.
+     *
+     * @param  \ReflectionClass<object>  $class
+     */
+    private static function type(?\ReflectionType $type, \ReflectionClass $class): string
+    {
+        return (string) preg_replace('/(?<![\\\\\w])self(?![\\\\\w])/', $class->getName(), (string) $type);
+    }
+
+    /**
+     * @param  \ReflectionClass<object>  $class
+     * @return array<string, mixed>
+     */
+    private static function param(\ReflectionParameter $p, \ReflectionClass $class): array
     {
         $default = null;
         if ($p->isDefaultValueAvailable()) {
@@ -305,7 +319,7 @@ final class ApiSurface
 
         return [
             'name' => $p->getName(),
-            'type' => (string) $p->getType(),
+            'type' => self::type($p->getType(), $class),
             'optional' => $p->isOptional(),
             'default' => $default,
             'variadic' => $p->isVariadic(),
