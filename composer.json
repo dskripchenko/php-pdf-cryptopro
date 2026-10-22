@@ -35,7 +35,8 @@
     },
     "scripts": {
         "test": "phpunit",
-        "stan": "phpstan analyse"
+        "stan": "phpstan analyse",
+        "api:record": "@php bin/api-record"
     },
     "config": {
         "sort-packages": true
