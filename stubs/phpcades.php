@@ -37,6 +37,24 @@ class CPCertificate
     {
         return '';
     }
+
+    public function PrivateKey(): CPPrivateKey
+    {
+        return new CPPrivateKey;
+    }
+}
+
+class CPPrivateKey
+{
+    public function set_KeyPin(string $pin): void {}
+}
+
+class CPRawSignature
+{
+    public function SignHash(CPHashedData $hashed, CPCertificate $certificate): string
+    {
+        return '';
+    }
 }
 
 class CPSigner

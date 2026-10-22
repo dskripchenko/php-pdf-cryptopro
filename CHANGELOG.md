@@ -4,6 +4,27 @@ All notable changes to `dskripchenko/php-pdf-cryptopro` are documented in this f
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Nothing changes for existing code: `CryptoProCadesSigner`, `SignMode`,
+`Cades` and the behaviour of `PhpCades` stay as they were in 1.0.0.
+
+### Added
+- `CryptoProRawSigner` — a php-pdf `Signer` for a key in CryptoPro CSP:
+  the CSP signs only a hash (CAdESCOM `RawSignature`) and php-pdf builds
+  the CMS, so the signature carries no `signing-time` attribute, as the
+  PAdES baseline profile (ETSI EN 319 142-1) wants. GOST R 34.10-2012 and
+  RSA keys; the value is checked against the certificate before it is
+  embedded.
+- `RawCades` — the CSP operation the raw signer needs, implemented by
+  `PhpCades`; a separate interface so existing `Cades` implementations
+  keep working.
+- The 1.x API contract: `tests/api/baseline-1.x.json` records the public
+  API released in 1.0.0 — names of parameters included — and the test
+  suite fails on anything that breaks it. Within 1.x the API only grows.
+- `docker/` smoke test: signs with `CryptoProRawSigner` too, and with
+  `KEY_PIN` from a key container with a password.
+
 ## [1.0.0] — 2026-10-16
 
 ### Fixed

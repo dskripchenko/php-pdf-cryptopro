@@ -16,12 +16,16 @@ final class FakeCsp
     /** The PIN the signer was given. */
     public static ?string $givenPin = null;
 
+    /** Sign with a key that is not the certificate's. */
+    public static bool $wrongKey = false;
+
     public static function load(): void
     {
         require_once __DIR__.'/fake-phpcades.php';
         self::$calls = [];
         self::$pin = null;
         self::$givenPin = null;
+        self::$wrongKey = false;
     }
 
     public static function checkPin(): void

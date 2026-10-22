@@ -521,6 +521,225 @@
             }
         }
     },
+    "Dskripchenko\\PhpPdfCryptoPro\\CryptoProRawSigner": {
+        "kind": "class",
+        "final": true,
+        "abstract": false,
+        "readonly": false,
+        "parent": null,
+        "implements": [
+            "Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\Signer"
+        ],
+        "constants": [],
+        "cases": [],
+        "properties": [],
+        "methods": {
+            "__construct": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "",
+                "params": [
+                    {
+                        "name": "cades",
+                        "type": "Dskripchenko\\PhpPdfCryptoPro\\Cades&Dskripchenko\\PhpPdfCryptoPro\\RawCades",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "handle",
+                        "type": "object",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "pin",
+                        "type": "?string",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "chain",
+                        "type": "array",
+                        "optional": true,
+                        "default": "array ()",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "digest",
+                        "type": "?Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\DigestAlgorithm",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            },
+            "certificate": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\Certificate",
+                "params": []
+            },
+            "chain": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "array",
+                "params": []
+            },
+            "digestAlgorithm": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\DigestAlgorithm",
+                "params": []
+            },
+            "fromSubject": {
+                "visibility": "public",
+                "static": true,
+                "final": false,
+                "abstract": false,
+                "return": "Dskripchenko\\PhpPdfCryptoPro\\CryptoProRawSigner",
+                "params": [
+                    {
+                        "name": "subject",
+                        "type": "string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "pin",
+                        "type": "?string",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "store",
+                        "type": "Dskripchenko\\PhpPdfCryptoPro\\Store",
+                        "optional": true,
+                        "default": "Dskripchenko\\PhpPdfCryptoPro\\Store::CurrentUser",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "chain",
+                        "type": "array",
+                        "optional": true,
+                        "default": "array ()",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "digest",
+                        "type": "?Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\DigestAlgorithm",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "cades",
+                        "type": "(Dskripchenko\\PhpPdfCryptoPro\\Cades&Dskripchenko\\PhpPdfCryptoPro\\RawCades)|null",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            },
+            "fromThumbprint": {
+                "visibility": "public",
+                "static": true,
+                "final": false,
+                "abstract": false,
+                "return": "Dskripchenko\\PhpPdfCryptoPro\\CryptoProRawSigner",
+                "params": [
+                    {
+                        "name": "thumbprint",
+                        "type": "string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "pin",
+                        "type": "?string",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "store",
+                        "type": "Dskripchenko\\PhpPdfCryptoPro\\Store",
+                        "optional": true,
+                        "default": "Dskripchenko\\PhpPdfCryptoPro\\Store::CurrentUser",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "chain",
+                        "type": "array",
+                        "optional": true,
+                        "default": "array ()",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "digest",
+                        "type": "?Dskripchenko\\PhpPdf\\Pdf\\Signature\\Signer\\DigestAlgorithm",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "cades",
+                        "type": "(Dskripchenko\\PhpPdfCryptoPro\\Cades&Dskripchenko\\PhpPdfCryptoPro\\RawCades)|null",
+                        "optional": true,
+                        "default": "NULL",
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            },
+            "sign": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "string",
+                "params": [
+                    {
+                        "name": "data",
+                        "type": "string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            }
+        }
+    },
     "Dskripchenko\\PhpPdfCryptoPro\\PhpCades": {
         "kind": "class",
         "final": true,
@@ -528,7 +747,8 @@
         "readonly": false,
         "parent": null,
         "implements": [
-            "Dskripchenko\\PhpPdfCryptoPro\\Cades"
+            "Dskripchenko\\PhpPdfCryptoPro\\Cades",
+            "Dskripchenko\\PhpPdfCryptoPro\\RawCades"
         ],
         "constants": [],
         "cases": [],
@@ -709,6 +929,101 @@
                     {
                         "name": "wholeChain",
                         "type": "bool",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            },
+            "signRawHash": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": false,
+                "return": "string",
+                "params": [
+                    {
+                        "name": "certificate",
+                        "type": "object",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "hashHex",
+                        "type": "string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "hashAlgorithm",
+                        "type": "int",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "pin",
+                        "type": "?string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    }
+                ]
+            }
+        }
+    },
+    "Dskripchenko\\PhpPdfCryptoPro\\RawCades": {
+        "kind": "interface",
+        "final": false,
+        "abstract": false,
+        "readonly": false,
+        "parent": null,
+        "implements": [],
+        "constants": [],
+        "cases": [],
+        "properties": [],
+        "methods": {
+            "signRawHash": {
+                "visibility": "public",
+                "static": false,
+                "final": false,
+                "abstract": true,
+                "return": "string",
+                "params": [
+                    {
+                        "name": "certificate",
+                        "type": "object",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "hashHex",
+                        "type": "string",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "hashAlgorithm",
+                        "type": "int",
+                        "optional": false,
+                        "default": null,
+                        "variadic": false,
+                        "byRef": false
+                    },
+                    {
+                        "name": "pin",
+                        "type": "?string",
                         "optional": false,
                         "default": null,
                         "variadic": false,

@@ -58,6 +58,11 @@ class CPCertificates
 
 class CPCertificate
 {
+    public function PrivateKey(): CPPrivateKey
+    {
+        return new CPPrivateKey;
+    }
+
     public function Export(int $encoding): string
     {
         FakeCsp::$calls[] = ['Export', $encoding];
@@ -84,6 +89,39 @@ class CPSigner
     {
         $this->pin = $pin;
         FakeCsp::$givenPin = $pin;
+    }
+}
+
+class CPPrivateKey
+{
+    /** Like the real CSP: a wrong PIN fails at once. */
+    public function set_KeyPin(string $pin): void
+    {
+        FakeCsp::$givenPin = $pin;
+        FakeCsp::checkPin();
+    }
+}
+
+class CPRawSignature
+{
+    /**
+     * An RSA PKCS#1 v1.5 value over the hash, hex — reversed, the way
+     * CryptoAPI returns signature values.
+     */
+    public function SignHash(CPHashedData $hashed, CPCertificate $certificate): string
+    {
+        FakeCsp::$calls[] = ['RawSignHash', $hashed->algorithm, $hashed->hex];
+        FakeCsp::checkPin();
+        if (FakeCsp::$wrongKey) {
+            return strtoupper(bin2hex(random_bytes(256)));
+        }
+        // DigestInfo for SHA-256 (the fake's key is RSA): sign the given hash, not data.
+        $digestInfo = (string) hex2bin('3031300d060960864801650304020105000420').(string) hex2bin($hashed->hex);
+        if (! openssl_private_encrypt($digestInfo, $value, TestPki::get()['keyPem'], OPENSSL_PKCS1_PADDING)) {
+            throw new RuntimeException('openssl_private_encrypt failed');
+        }
+
+        return strtoupper(bin2hex(strrev($value)));
     }
 }
 

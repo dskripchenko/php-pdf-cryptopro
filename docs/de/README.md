@@ -54,6 +54,56 @@ Fälle: falsche oder gesperrte PIN, fehlender Container oder fehlende
 Rechte, Zertifikat ohne privaten Schlüssel, nicht vertrauenswürdige Kette,
 nicht unterstützter Algorithmus.
 
+## Ohne `signing-time`: `CryptoProRawSigner`
+
+Der CSP setzt in jedes CMS, das er erstellt, ein `signing-time`-Attribut.
+Russische Prüfwerkzeuge akzeptieren das, das PAdES-Baseline-Profil
+(ETSI EN 319 142-1) aber will keines — die Signaturzeit steht in `/M` des
+Signaturwörterbuchs —, und strenge Validatoren wie EU DSS bemängeln es.
+`CryptoProRawSigner` lässt den CSP nur einen Hash signieren
+(`RawSignature`) und das CMS von php-pdf bauen, ohne `signing-time`:
+
+```php
+use Dskripchenko\PhpPdf\Pdf\Signature\Signer\Certificate;
+use Dskripchenko\PhpPdfCryptoPro\CryptoProRawSigner;
+
+$signer = CryptoProRawSigner::fromThumbprint('3A 5F … 9C', pin: $pin, chain: [
+    Certificate::fromPem(file_get_contents('issuing-ca.cer')),
+]);
+
+$signed = PdfSigner::fromBytes($pdf)->sign(new SignatureConfig(signer: $signer));
+```
+
+Er nimmt `pin`, `store`, `chain` und `digest` wie oben. Die Kette baut
+hier nicht der CSP, also die Zwischenzertifikate als `chain` übergeben.
+GOST-R-34.10-2012- und RSA-Schlüssel; ein ECDSA-Schlüssel signiert mit
+`CryptoProCadesSigner`. Der zurückgegebene Wert wird gegen das Zertifikat
+geprüft, bevor php-pdf ihn einbettet.
+
+`CryptoProCadesSigner` ist unverändert: Der Wechsel ist nur die Wahl der
+Klasse, die Sie erzeugen.
+
+**Übergeben Sie immer die PIN eines Containers, der eine hat.** Ohne sie
+fragt der CSP das Passwort im Terminal ab; ein CLI-Skript schlägt dann
+fehl, und ein PHP-FPM-Worker kann abstürzen (SIGSEGV) — mit beiden
+Signierern.
+
+## Kompatibilität
+
+Innerhalb von 1.x bricht die in 1.0.0 veröffentlichte öffentliche API
+nicht: Klassen, Methoden, **Parameternamen** (Argumente dürfen per Name
+übergeben werden), Standardwerte, Konstanten und Enum-Fälle bleiben, wie
+sie sind; `Cades` bekommt keine Methoden und `SignMode` keine Fälle hinzu.
+Neues kommt als neue Klassen oder optionale Parameter am Ende. Eine
+Änderung, die etwas davon bricht, ist eine 2.0.
+`tests/api/baseline-1.x.json` hält den Vertrag fest, und die Testsuite
+schlägt bei jedem Bruch fehl.
+
+Getestet mit CryptoPro CSP 5.0.13820 und CAdES SDK 2.0.15820 (PHP 8.3 und
+8.5). CSP 5.0.13000 mit CAdES 2.0.15000 unter Debian 13 konnte nicht
+signieren (`0x8009001D`) und brachte PHP-FPM-Worker zum Absturz; ein
+CSP-Update hat das behoben.
+
 ## Voraussetzungen
 
 Auf dem Server, auf dem PHP signiert:
@@ -83,6 +133,8 @@ dem CSP; `PhpCades` ist ihre Implementierung auf Basis der Erweiterung.
 Übergeben Sie ein eigenes `Cades` als `cades:`, um den Code ohne CryptoPro
 auszuführen — so machen es die Tests dieses Pakets mit einer
 OpenSSL-basierten Attrappe der Erweiterung.
+`CryptoProRawSigner` nimmt als `cades:` ein Objekt, das zusätzlich
+`RawCades` implementiert.
 
 ## Die php-pdf-Familie
 

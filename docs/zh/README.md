@@ -47,6 +47,45 @@ php-pdf 在嵌入之前会检查 CSP 返回的签名：它恰好覆盖本文档�
 并对常见情况给出说明：PIN 错误或被锁定、容器不存在或无权访问、证书没有
 私钥、证书链不受信任、算法不受支持。
 
+## 不含 `signing-time`：`CryptoProRawSigner`
+
+CSP 会在它生成的每个 CMS 中加入 `signing-time` 属性。俄罗斯的验证工具接受这一点，
+但 PAdES 基线配置（ETSI EN 319 142-1）不允许它——签名时间记录在签名字典的 `/M`
+中——像 EU DSS 这样的严格验证器会将其标记出来。`CryptoProRawSigner` 只让 CSP
+对哈希签名（`RawSignature`），由 php-pdf 自己构建 CMS，不含 `signing-time`：
+
+```php
+use Dskripchenko\PhpPdf\Pdf\Signature\Signer\Certificate;
+use Dskripchenko\PhpPdfCryptoPro\CryptoProRawSigner;
+
+$signer = CryptoProRawSigner::fromThumbprint('3A 5F … 9C', pin: $pin, chain: [
+    Certificate::fromPem(file_get_contents('issuing-ca.cer')),
+]);
+
+$signed = PdfSigner::fromBytes($pdf)->sign(new SignatureConfig(signer: $signer));
+```
+
+它接受与上文相同的 `pin`、`store`、`chain` 和 `digest`。此时证书链不由 CSP
+构建，请通过 `chain` 传入中间证书。支持 GOST R 34.10-2012 和 RSA 密钥；ECDSA
+密钥请使用 `CryptoProCadesSigner` 签名。php-pdf 在嵌入之前会用证书校验 CSP
+返回的签名值。
+
+`CryptoProCadesSigner` 保持不变：切换只是选择创建哪个类。
+
+**容器设有 PIN 时务必传入 PIN。** 否则 CSP 会在终端上询问密码：CLI 脚本会失败，
+PHP-FPM 工作进程可能崩溃（SIGSEGV）——无论使用哪个签名器。
+
+## 兼容性
+
+在 1.x 范围内，1.0.0 发布的公共 API 不会被破坏：类、方法、**参数名**（可以放心按名称传参）、
+默认值、常量和枚举项保持不变；`Cades` 不会新增方法，`SignMode` 不会新增枚举项。
+新功能以新类或末尾的可选参数形式加入。任何会破坏上述内容的改动都属于 2.0。
+`tests/api/baseline-1.x.json` 记录了这一契约，测试套件在任何破坏时都会失败。
+
+已在 CryptoPro CSP 5.0.13820 和 CAdES SDK 2.0.15820（PHP 8.3 与 8.5）上测试。
+Debian 13 上的 CSP 5.0.13000 搭配 CAdES 2.0.15000 无法签名（`0x8009001D`），
+并导致 PHP-FPM 工作进程崩溃；更新 CSP 后问题解决。
+
 ## 要求
 
 在 PHP 执行签名的服务器上：
@@ -72,6 +111,7 @@ php-pdf 在嵌入之前会检查 CSP 返回的签名：它恰好覆盖本文档�
 `CryptoProCadesSigner` 通过小接口 `Cades` 与 CSP 交互；`PhpCades` 是基于
 该扩展的实现。通过 `cades:` 传入自己的 `Cades`，即可在没有 CryptoPro 的
 情况下运行代码——本包的测试就是用基于 OpenSSL 的扩展替身这样做的。
+`CryptoProRawSigner` 的 `cades:` 还需实现 `RawCades`。
 
 ## php-pdf 系列
 
