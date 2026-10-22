@@ -14,7 +14,7 @@ use Dskripchenko\PhpPdf\Pdf\Signature\Signer\DigestAlgorithm;
  * to the CAdESCOM values otherwise, since builds of the extension differ in
  * what they export.
  */
-final class PhpCades implements Cades
+final class PhpCades implements Cades, RawCades
 {
     public function __construct()
     {
@@ -97,6 +97,30 @@ final class PhpCades implements Cades
         }
 
         return self::decode($base64, 'the signature');
+    }
+
+    public function signRawHash(object $certificate, string $hashHex, int $hashAlgorithm, #[\SensitiveParameter] ?string $pin): string
+    {
+        try {
+            $hashed = new \CPHashedData;
+            $hashed->set_Algorithm($hashAlgorithm);
+            $hashed->SetHashValue($hashHex);
+            // RawSignature takes no signer: the PIN goes to the certificate's key.
+            if ($pin !== null) {
+                $certificate->PrivateKey()->set_KeyPin($pin);
+            }
+
+            $hex = (string) (new \CPRawSignature)->SignHash($hashed, $certificate);
+        } catch (\Throwable $e) {
+            throw CryptoProException::from($e, 'signing the hash');
+        }
+
+        $hex = (string) preg_replace('/\s+/', '', $hex);
+        if (strlen($hex) % 2 !== 0 || preg_match('/^[0-9A-Fa-f]+$/', $hex) !== 1) {
+            throw new CryptoProException('CryptoPro CSP returned the signature not in hex');
+        }
+
+        return (string) hex2bin($hex);
     }
 
     private function find(int $by, string $value, Store $store): ?object

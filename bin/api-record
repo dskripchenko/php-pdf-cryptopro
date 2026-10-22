@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// Records the current public API into tests/api/baseline-1.x.json — the
+// 1.x contract. Refuses when the change breaks what is recorded: a break
+// is a major version, not a new baseline. `--init` writes the first one.
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Dskripchenko\PhpPdfCryptoPro\Tests\Support\ApiSurface;
+
+$current = ApiSurface::current();
+if (! in_array('--init', $argv, true)) {
+    $breaks = ApiSurface::breaks(ApiSurface::baseline(), $current);
+    if ($breaks !== []) {
+        fwrite(STDERR, "Not recorded — this breaks the 1.x contract:\n  ".implode("\n  ", $breaks)."\n");
+        exit(1);
+    }
+}
+file_put_contents(ApiSurface::BASELINE, ApiSurface::encode($current));
+echo 'Recorded '.count($current)." types into tests/api/baseline-1.x.json\n";

@@ -17,16 +17,21 @@ CryptoPro CSP cannot be redistributed, so it is not in this repository:
    docker build -t php-pdf-cryptopro --build-arg CSP_ARCHIVE=linux-arm64_deb.tgz docker
    ```
 
-3. Sign and validate in both modes (`SignHash` and `SignCades`):
+3. Sign and validate with `CryptoProCadesSigner` in both modes (`SignHash`
+   and `SignCades`) and with `CryptoProRawSigner`:
 
    ```bash
    docker run --rm -v "$PWD:/pkg:ro" -v "$PWD/docker/dist:/out" php-pdf-cryptopro bash /pkg/docker/smoke/run.sh
    ```
 
    ```
-   Hash    phpcades-test | md_gost12_256 | valid=true errors=[] warnings=["No revocation data for \"phpcades-test\""]
-   Content phpcades-test | md_gost12_256 | valid=true errors=[] warnings=["No revocation data for \"phpcades-test\""]
+   Hash    phpcades-test | md_gost12_256 | signing-time=yes | valid=true errors=[] warnings=["No revocation data for \"phpcades-test\""]
+   Content phpcades-test | md_gost12_256 | signing-time=yes | valid=true errors=[] warnings=["No revocation data for \"phpcades-test\""]
+   Raw     phpcades-test | md_gost12_256 | signing-time=no | valid=true errors=[] warnings=["No revocation data for \"phpcades-test\""]
    ```
+
+   `-e KEY_PIN=…` puts the key into a container with that password and
+   signs with the PIN, as a production container usually has one.
 
    The signed PDFs land in `docker/dist/`. The test CA publishes no
    revocation data, hence the warning.
